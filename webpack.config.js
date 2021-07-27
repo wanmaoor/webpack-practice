@@ -14,6 +14,14 @@ module.exports = {
             {
                 test: /.js$/,
                 use: 'babel-loader'
+            },
+            {
+                test: /.css$/,
+                use: ['style-loader', 'css-loader'] // css-loader将样式打包为common.js对象, style-loader将前者转换成style标签及其内部样式添加到html当中
+            },
+            {
+                test: /.less$/,
+                use: ['style-loader', 'css-loader', 'less-loader']
             }
         ]
     }
