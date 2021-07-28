@@ -9,6 +9,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: "bundle.[name].js"
     },
+    watch: true,
     module: {
         rules: [
             {
@@ -22,6 +23,10 @@ module.exports = {
             {
                 test: /.less$/,
                 use: ['style-loader', 'css-loader', 'less-loader']
+            },
+            {
+                test: /.(png|jpg|gif|jpeg)$/,
+                use: 'file-loader'
             }
         ]
     }
