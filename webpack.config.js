@@ -1,6 +1,7 @@
 const path = require('path')
+const webpack = require('webpack') // 这里是为了引用webpack的内置插件
 module.exports = {
-    mode: "production",
+    mode: "development",
     entry: {
         app: path.resolve(__dirname, 'src', 'index.js'),
         search: path.join(__dirname, '/src', '/search.js')
@@ -29,5 +30,12 @@ module.exports = {
                 use: 'file-loader'
             }
         ]
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin()
+    ],
+    devServer: {
+        contentBase: './dist',
+        hot: true
     }
 }
