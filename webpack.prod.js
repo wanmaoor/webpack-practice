@@ -8,7 +8,7 @@ module.exports = {
     },
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: "bundle.[name].[chunkhash].js"
+        filename: "bundle.[name].[chunkhash:8].js"
     },
     watch: true,
     module: {
