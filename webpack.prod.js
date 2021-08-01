@@ -23,11 +23,31 @@ module.exports = {
             {
                 test: /.css$/,
                 use: [MiniCssExtractPlugin.loader, 'css-loader'], // css-loader将样式打包为common.js对象, style-loader将前者转换成style标签及其内部样式添加到html当中
-
             },
             {
                 test: /.less$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    'css-loader',
+                    'less-loader',
+                    {
+                        loader: "postcss-loader",
+                        options: {
+                            // plugins: () => [
+                            //     require('autoprefixer')({
+                            //         overrideBrowserslist: ['last 2 version', '>1%', 'ios 7'] // 使用率大于1%的浏览器
+                            //     })
+                            // ]
+                            postcssOptions: {
+                                plugins: [
+                                    [
+                                        "autoprefixer"
+                                    ]
+                                ]
+                            }
+                        }
+                    }
+                ]
             },
             {
                 test: /.(png|jpg|gif|jpeg)$/,
@@ -39,7 +59,6 @@ module.exports = {
                         }
                     }
                 ],
-
             }
         ]
     },
