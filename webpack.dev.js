@@ -1,5 +1,6 @@
 const path = require('path')
 const webpack = require('webpack') // 这里是为了引用webpack的内置插件
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 module.exports = {
     mode: "development",
     entry: {
@@ -32,7 +33,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        new webpack.HotModuleReplacementPlugin(),
+        new CleanWebpackPlugin()
     ],
     devServer: {
         contentBase: './dist',
