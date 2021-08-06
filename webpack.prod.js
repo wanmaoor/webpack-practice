@@ -2,6 +2,7 @@ const path = require('path')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const InlineSourceWebpackPlugin = require('inline-source-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 module.exports = {
     mode: "production",
@@ -13,7 +14,6 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: "bundle.[name].[chunkhash:8].js"
     },
-    watch: true,
     module: {
         rules: [
             {
@@ -97,6 +97,10 @@ module.exports = {
                 minifyJS: true,
                 removeComments: false
             }
+        }),
+        new InlineSourceWebpackPlugin({
+            compress: true,
+            rootpath: './src'
         }),
         new CleanWebpackPlugin()
     ]
