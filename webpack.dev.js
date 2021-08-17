@@ -5,7 +5,7 @@ module.exports = {
     mode: "development",
     entry: {
         app: path.resolve(__dirname, 'src', 'index.js'),
-        search: path.join(__dirname, '/src', '/search.js')
+        search: path.join(__dirname, '/src', '/index.js')
     },
     output: {
         path: path.join(__dirname, 'dist'),

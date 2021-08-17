@@ -1,15 +1,42 @@
 const path = require('path')
+const glob = require('glob')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const InlineSourceWebpackPlugin = require('inline-source-webpack-plugin');
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+const setMPA = () => {
+    const entry = {}
+    const htmlWebpackPlugins = []
+    const entryFiles = glob.sync(path.join(__dirname, './src/*/index.js'))
+    Object.keys(entryFiles).map(index => {
+        const entryFile = entryFiles[index]
+        const pageName = entryFile.match(/src\/(.*)\/index\.js/)[1]
+        entry[pageName] = entryFile
+        htmlWebpackPlugins.push(new HtmlWebpackPlugin({
+            template: path.join(__dirname, `src/${pageName}/index.html`),
+            filename: pageName + '.html',
+            chunks: [pageName],
+            inject: true,
+            minify: {
+                html5: true,
+                collapseWhitespace: true,
+                preserveLineBreaks: false,
+                minifyCSS: true,
+                minifyJS: true,
+                removeComments: false
+            }
+        }))
+    })
+    return {
+        entry,
+        htmlWebpackPlugins
+    }
+}
+const {entry, htmlWebpackPlugins} = setMPA()
 module.exports = {
     mode: "production",
-    entry: {
-        app: path.resolve(__dirname, 'src', 'index.js'),
-        search: path.join(__dirname, '/src', '/search.js')
-    },
+    entry,
     output: {
         path: path.join(__dirname, 'dist'),
         filename: "bundle.[name].[chunkhash:8].js"
@@ -70,38 +97,11 @@ module.exports = {
             assetNameRegExp: /\.css$/g,
             cssProcessor: require('cssnano')
         }),
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'src/search.html'),
-            filename: "search.html",
-            chunks: ['search'],
-            inject: true,
-            minify: {
-                html5: true,
-                collapseWhitespace: true,
-                preserveLineBreaks: false,
-                minifyCSS: true,
-                minifyJS: true,
-                removeComments: false
-            }
-        }),
-        new HtmlWebpackPlugin({
-            template: path.join(__dirname, 'src/index.html'),
-            filename: "app.html",
-            chunks: ['app'],
-            inject: true,
-            minify: {
-                html5: true,
-                collapseWhitespace: true,
-                preserveLineBreaks: false,
-                minifyCSS: true,
-                minifyJS: true,
-                removeComments: false
-            }
-        }),
         new InlineSourceWebpackPlugin({
             compress: true,
             rootpath: './src'
         }),
-        new CleanWebpackPlugin()
+        new CleanWebpackPlugin(),
+        ...htmlWebpackPlugins
     ]
 }

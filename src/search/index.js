@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './search.less'
 
-class Search extends React.Component {
+class Index extends React.Component {
     render() {
         return (<div className="search-text">
             Search Text12311哎哟我
@@ -12,6 +12,6 @@ class Search extends React.Component {
 }
 
 ReactDOM.render(
-    <Search/>,
+    <Index/>,
     document.getElementById('root')
 )
