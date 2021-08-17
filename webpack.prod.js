@@ -16,7 +16,7 @@ const setMPA = () => {
         htmlWebpackPlugins.push(new HtmlWebpackPlugin({
             template: path.join(__dirname, `src/${pageName}/index.html`),
             filename: pageName + '.html',
-            chunks: [pageName],
+            chunks: [pageName, 'vendor-wan'],
             inject: true,
             minify: {
                 html5: true,
@@ -35,7 +35,7 @@ const setMPA = () => {
 }
 const {entry, htmlWebpackPlugins} = setMPA()
 module.exports = {
-    mode: "none",
+    mode: "production",
     entry,
     output: {
         path: path.join(__dirname, 'dist'),
@@ -102,7 +102,25 @@ module.exports = {
             rootpath: './src'
         }),
         new CleanWebpackPlugin(),
-        ...htmlWebpackPlugins,
+        ...htmlWebpackPlugins
     ],
-    devtool: 'source-map'
+    optimization: {
+        splitChunks: {
+            chunks: "all",
+            minSize: 30000,
+            maxSize: 0,
+            minChunks: 1,
+            maxAsyncRequests: 5,
+            maxInitialRequests: 3,
+            automaticNameDelimiter: '~',
+            name: true,
+            cacheGroups: {
+                vendors: {
+                    test: /[\\/]node_modules[\\/]/,
+                    name: 'vendor-wan',
+                    chunks: 'all'
+                }
+            }
+        }
+    }
 }
